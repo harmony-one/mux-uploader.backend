@@ -3,3 +3,4 @@ docker
 .idea
 logs
 .env
+./src/httpapi/upload/big_buck_bunny_720p_1mb.mp4

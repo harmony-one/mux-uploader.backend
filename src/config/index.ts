@@ -8,6 +8,18 @@ export enum AppEnv {
 
 interface AppConfig {
   appEnv: AppEnv;
+  aws: {
+    s3: {
+      region: string;
+      bucket: string;
+      accessKeyId: string;
+      secretAccessKey: string;
+    };
+  };
+  mux: {
+    tokenId: string;
+    tokenSecret: string;
+  };
 }
 
 function getAppEnv(envStr: string | undefined) {
@@ -25,4 +37,16 @@ function getAppEnv(envStr: string | undefined) {
 
 export const config: AppConfig = {
   appEnv: getAppEnv(process.env.APP_ENV),
+  aws: {
+    s3: {
+      region: process.env.S3_REGION || "",
+      bucket: process.env.S3_BUCKET || "",
+      accessKeyId: process.env.S3_ACCESS_KEY || "",
+      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+    },
+  },
+  mux: {
+    tokenId: process.env.MUX_TOKEN_ID || "",
+    tokenSecret: process.env.MUX_TOKEN_SECRET || "",
+  },
 };
