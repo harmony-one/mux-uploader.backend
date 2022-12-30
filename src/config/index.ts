@@ -8,6 +8,14 @@ export enum AppEnv {
 
 interface AppConfig {
   appEnv: AppEnv;
+  port: number;
+  db: {
+    username: string;
+    password: string;
+    database: string;
+    host: string;
+    dialect: "postgres";
+  };
   aws: {
     s3: {
       region: string;
@@ -32,11 +40,19 @@ function getAppEnv(envStr: string | undefined) {
     return env;
   }
 
-  throw new Error("APP_ENV is invalid");
+  throw new Error(`APP_ENV is invalid: ${env}`);
 }
 
 export const config: AppConfig = {
   appEnv: getAppEnv(process.env.APP_ENV),
+  port: parseInt(process.env.PORT || "3001", 10),
+  db: {
+    username: process.env.DB_USER || "",
+    password: process.env.DB_PASSWORD || "",
+    database: process.env.DB_NAME || "",
+    host: process.env.DB_HOST || "",
+    dialect: "postgres",
+  },
   aws: {
     s3: {
       region: process.env.S3_REGION || "",
