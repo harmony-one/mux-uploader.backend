@@ -13,6 +13,8 @@ import { Optional } from "sequelize";
 interface VideoAttributes {
   id: string;
   assetId: string;
+  awsURL: string;
+  awsKey: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -27,6 +29,12 @@ export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
   id: string;
   @Column
   assetId: string;
+
+  @Column
+  awsURL: string;
+
+  @Column
+  awsKey: string;
 
   @CreatedAt
   createdAt: Date;

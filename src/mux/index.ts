@@ -12,4 +12,7 @@ export const mux = {
 
     return asset;
   },
+  loadAsset: async (assetId: string) => {
+    return Video.Assets.get(assetId);
+  },
 };
