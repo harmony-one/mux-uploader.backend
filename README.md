@@ -24,7 +24,24 @@
 
 `npm run start:dev`
 
+### HTTP API
 
+#### Upload video
+
+POST `/upload`
+
+example:
+
+curl -F "video=@big_buck_bunny_720p_1mb.mp4" http://localhost:8080/upload
+
+#### List of videos
+GET `/videos`
+
+#### Video info
+GET `/videos/:videoId`
+
+#### Mux Asset info
+GET `/videos/:videoId/muxAsset`
 
 ### Sequelize + TypeScript
 
