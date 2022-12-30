@@ -23,8 +23,6 @@
 `npx sequelize-cli db:migrate:undo`
 `npx sequelize-cli db:migrate:undo:all`
 
-`npm run start`
-
 ### Sequelize + TypeScript
 
 https://www.npmjs.com/package/sequelize-typescript

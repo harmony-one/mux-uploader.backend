@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./src/app.ts",
+    "start:dev": "npx nodemon",
     "test": "APP_ENV=test npx jest",
     "prepare": "husky install"
   },
@@ -16,6 +16,7 @@
     "@types/uuid": "^9.0.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.8.1",
     "sequelize-cli": "^6.4.1",
     "ts-node": "^10.7.0"
