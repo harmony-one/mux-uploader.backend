@@ -16,18 +16,20 @@ export const uploadRoute = async (req: Request, res: Response) => {
   const ext = file.name.split(".").pop();
   const awsKey = id + "." + ext;
 
+  res.json({
+    data: {
+      id,
+    },
+  });
+
   const sendData = await s3Api.uploadFile(file.data, id + "." + ext);
 
   const asset = await mux.createAsset(id, sendData.Location);
 
-  const video = await VideoDAL.createVideo({
+  await VideoDAL.createVideo({
     id,
     muxAssetId: asset.id,
     awsKey,
     awsURL: sendData.Location,
-  });
-
-  return res.json({
-    data: video.toJSON(),
   });
 };
