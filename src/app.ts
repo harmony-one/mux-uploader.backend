@@ -27,3 +27,7 @@ const main = async () => {
 };
 
 main();
+
+process.on("uncaughtException", (err) => {
+  logger.error("uncaughtException", err);
+});
