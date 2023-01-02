@@ -10,10 +10,17 @@ import {
 
 import { Optional } from "sequelize";
 
+export enum MuxAssetStatus {
+  PREPARING = "preparing",
+  ERROR = "error",
+  READY = "ready",
+}
+
 interface VideoAttributes {
   id: string;
   muxAssetId: string;
   muxPlaybackId: string;
+  muxAssetStatus: MuxAssetStatus;
   awsURL: string;
   awsKey: string;
   createdAt: string;
@@ -37,6 +44,9 @@ export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
 
   @Column
   muxPlaybackId: string;
+
+  @Column
+  muxAssetStatus: MuxAssetStatus;
 
   @Column
   awsURL: string;

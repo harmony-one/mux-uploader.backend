@@ -1,4 +1,4 @@
-import { Video } from "../db/models/Video";
+import { MuxAssetStatus, Video } from "../db/models/Video";
 
 interface CreateVideoAttr {
   id: string;
@@ -11,6 +11,7 @@ export const VideoDAL = {
   createVideo: async (params: CreateVideoAttr) => {
     const video = await Video.create({
       id: params.id,
+      muxAssetStatus: MuxAssetStatus.PREPARING,
       muxAssetId: params.muxAssetId,
       awsKey: params.awsKey,
       awsURL: params.awsURL,
@@ -19,7 +20,7 @@ export const VideoDAL = {
     return video;
   },
   list: async () => {
-    return Video.findAll();
+    return Video.findAll({ order: [["createdAt", "DESC"]] });
   },
   get: async (videoId: string) => {
     return Video.findByPk(videoId);
