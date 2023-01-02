@@ -2,6 +2,7 @@ import { sequelize } from "./db/models";
 import { httpAPI } from "./httpapi";
 import { config } from "./config";
 import { logger } from "./logger";
+import { mux } from "./mux";
 
 export const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,6 +25,7 @@ const main = async () => {
   await testDb();
   logger.info(`App runs on: ${config.port}`);
   httpAPI.listen(config.port);
+  mux.runAssetWatcher();
 };
 
 main();

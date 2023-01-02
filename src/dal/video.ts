@@ -22,6 +22,14 @@ export const VideoDAL = {
   list: async () => {
     return Video.findAll({ order: [["createdAt", "DESC"]] });
   },
+
+  listPreparingVideo: async () => {
+    return Video.findAll({
+      where: { muxAssetStatus: MuxAssetStatus.PREPARING },
+      limit: 10,
+    });
+  },
+
   get: async (videoId: string) => {
     return Video.findByPk(videoId);
   },
