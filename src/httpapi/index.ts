@@ -13,7 +13,6 @@ httpAPI.get("/", (req, res) => {
   return res.json({ ok: true });
 });
 httpAPI.post("/upload", uploadRoute);
-
 httpAPI.get("/videos", videoListRoute);
 httpAPI.get("/videos/:videoId", videoRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);

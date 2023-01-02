@@ -50,7 +50,7 @@ https://www.npmjs.com/package/sequelize-typescript
 ### Migrations
 
 #### Docs
-https://sequelize.org/docs/v6/other-topics/migrations/#dynamic-configuration
+[dynamic-configuration](https://sequelize.org/docs/v6/other-topics/migrations/#dynamic-configuration)
 
 ### Revert migrations
 

@@ -9,8 +9,9 @@ export const sleep = (ms: number) => {
 
 const testDb = async () => {
   try {
-    return await sequelize.authenticate();
+    await sequelize.authenticate();
     logger.info("Database connection established");
+    return;
   } catch (ex) {
     logger.error("Database connection error", ex);
     await sleep(3000);

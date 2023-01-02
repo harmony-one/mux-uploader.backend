@@ -12,7 +12,8 @@ import { Optional } from "sequelize";
 
 interface VideoAttributes {
   id: string;
-  assetId: string;
+  muxAssetId: string;
+  muxPlaybackId: string;
   awsURL: string;
   awsKey: string;
   createdAt: string;
@@ -20,15 +21,22 @@ interface VideoAttributes {
 }
 
 interface VideoCreationAttributes
-  extends Optional<VideoAttributes, "createdAt" | "updatedAt"> {}
+  extends Optional<
+    VideoAttributes,
+    "createdAt" | "updatedAt" | "muxPlaybackId"
+  > {}
 
 @Table
 export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
   @PrimaryKey
   @Column
   id: string;
+
   @Column
-  assetId: string;
+  muxAssetId: string;
+
+  @Column
+  muxPlaybackId: string;
 
   @Column
   awsURL: string;

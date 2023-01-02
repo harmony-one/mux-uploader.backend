@@ -22,7 +22,7 @@ export const uploadRoute = async (req: Request, res: Response) => {
 
   const video = await VideoDAL.createVideo({
     id,
-    assetId: asset.id,
+    muxAssetId: asset.id,
     awsKey,
     awsURL: sendData.Location,
   });

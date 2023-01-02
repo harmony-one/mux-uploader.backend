@@ -2,7 +2,7 @@ import { Video } from "../db/models/Video";
 
 interface CreateVideoAttr {
   id: string;
-  assetId: string;
+  muxAssetId: string;
   awsURL: string;
   awsKey: string;
 }
@@ -11,7 +11,7 @@ export const VideoDAL = {
   createVideo: async (params: CreateVideoAttr) => {
     const video = await Video.create({
       id: params.id,
-      assetId: params.assetId,
+      muxAssetId: params.muxAssetId,
       awsKey: params.awsKey,
       awsURL: params.awsURL,
     });

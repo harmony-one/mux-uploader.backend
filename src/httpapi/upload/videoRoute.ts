@@ -6,11 +6,11 @@ export const videoRoute = async (req: Request, res: Response) => {
   const { videoId } = req.params;
   const video = await VideoDAL.get(videoId);
 
-  if (!video || !video.assetId) {
+  if (!video || !video.muxAssetId) {
     return res.sendStatus(404);
   }
 
-  const muxAsset = await mux.loadAsset(video.assetId);
+  const muxAsset = await mux.loadAsset(video.muxAssetId);
 
   const data = {
     ...video.toJSON(),
@@ -24,11 +24,11 @@ export const videoMuxAssetRoute = async (req: Request, res: Response) => {
   const { videoId } = req.params;
   const video = await VideoDAL.get(videoId);
 
-  if (!video || !video.assetId) {
+  if (!video || !video.muxAssetId) {
     return res.sendStatus(404);
   }
 
-  const asset = await mux.loadAsset(video.assetId);
+  const asset = await mux.loadAsset(video.muxAssetId);
 
   return res.json({ data: asset });
 };
