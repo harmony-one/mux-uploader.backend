@@ -27,6 +27,7 @@ interface AppConfig {
   mux: {
     tokenId: string;
     tokenSecret: string;
+    webhookSecret: string;
   };
 }
 
@@ -64,5 +65,6 @@ export const config: AppConfig = {
   mux: {
     tokenId: process.env.MUX_TOKEN_ID || "",
     tokenSecret: process.env.MUX_TOKEN_SECRET || "",
+    webhookSecret: process.env.MUX_WEBHOOK_SECRET || "",
   },
 };

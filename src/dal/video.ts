@@ -9,15 +9,13 @@ interface CreateVideoAttr {
 
 export const VideoDAL = {
   createVideo: async (params: CreateVideoAttr) => {
-    const video = await Video.create({
+    return Video.create({
       id: params.id,
       muxAssetStatus: MuxAssetStatus.PREPARING,
       muxAssetId: params.muxAssetId,
       awsKey: params.awsKey,
       awsURL: params.awsURL,
     });
-
-    return video;
   },
   list: async () => {
     return Video.findAll({ order: [["createdAt", "DESC"]] });
@@ -32,5 +30,9 @@ export const VideoDAL = {
 
   get: async (videoId: string) => {
     return Video.findByPk(videoId);
+  },
+
+  getByMuxAssetId: async (muxAssetId: string) => {
+    return Video.findOne({ where: { muxAssetId: muxAssetId } });
   },
 };
