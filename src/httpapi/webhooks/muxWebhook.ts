@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import Mux from "@mux/mux-node";
 import { config } from "../../config";
-import { MuxEventName, MuxEvents, MuxEventVideoAssetReady } from "./muxTypes";
+import {
+  MuxEventName,
+  MuxEvents,
+  MuxEventVideoAssetReady,
+} from "../../mux/muxTypes";
 import { logger } from "../../logger";
 import { updatePlaybackId } from "../../mux/assetWatcher";
 import { VideoDAL } from "../../dal/video";

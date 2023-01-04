@@ -3,10 +3,10 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import { uploadRoute } from "./upload/uploadRoute";
-import { videoListRoute } from "./upload/videoListRoute";
-import { videoMuxAssetRoute, videoRoute } from "./upload/videoRoute";
+import { videoListRoute } from "./video/videoListRoute";
+import { videoMuxAssetRoute, videoRoute } from "./video/videoRoute";
 import { logger } from "../logger";
-import { muxWebhook } from "./upload/muxWebhook";
+import { muxWebhook } from "./webhooks/muxWebhook";
 
 export const httpAPI = express();
 httpAPI.use(cors());
