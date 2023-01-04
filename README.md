@@ -24,6 +24,10 @@
 
 `npm run start:dev`
 
+#### Mux handling webhooks locally 
+
+[Docs](https://docs.mux.com/guides/video/listen-for-webhooks#handling-webhooks-locally)
+
 ### HTTP API
 
 #### Upload video

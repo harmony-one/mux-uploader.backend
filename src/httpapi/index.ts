@@ -1,13 +1,23 @@
 import express, { NextFunction, Response, Request } from "express";
 import cors from "cors";
+import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import { uploadRoute } from "./upload/uploadRoute";
 import { videoListRoute } from "./upload/videoListRoute";
 import { videoMuxAssetRoute, videoRoute } from "./upload/videoRoute";
 import { logger } from "../logger";
+import { muxWebhook } from "./upload/muxWebhook";
 
 export const httpAPI = express();
 httpAPI.use(cors());
+
+httpAPI.post(
+  "/webhooks/mux",
+  bodyParser.raw({ type: "application/json" }),
+  muxWebhook
+);
+
+httpAPI.use(bodyParser.json());
 
 httpAPI.use(fileUpload());
 httpAPI.get("/", (req, res) => {
@@ -18,7 +28,7 @@ httpAPI.get("/videos", videoListRoute);
 httpAPI.get("/videos/:videoId", videoRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
 
-httpAPI.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+httpAPI.use((err: Error, req: Request, res: Response) => {
   logger.error("error handler", err);
   res.status(500).send("Something wrong!");
 });
