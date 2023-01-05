@@ -5,7 +5,6 @@ import {
   UpdatedAt,
   Column,
   PrimaryKey,
-  DataType,
 } from "sequelize-typescript";
 
 import { Optional } from "sequelize";
@@ -23,6 +22,8 @@ interface VideoAttributes {
   muxAssetStatus: MuxAssetStatus;
   awsURL: string;
   awsKey: string;
+  name: string;
+  description: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -53,6 +54,12 @@ export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
 
   @Column
   awsKey: string;
+
+  @Column
+  name: string;
+
+  @Column
+  description: string;
 
   @CreatedAt
   createdAt: Date;

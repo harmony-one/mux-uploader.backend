@@ -5,6 +5,8 @@ interface CreateVideoAttr {
   muxAssetId: string;
   awsURL: string;
   awsKey: string;
+  name: string;
+  description: string;
 }
 
 export const VideoDAL = {
@@ -15,6 +17,8 @@ export const VideoDAL = {
       muxAssetId: params.muxAssetId,
       awsKey: params.awsKey,
       awsURL: params.awsURL,
+      name: params.name,
+      description: params.description,
     });
   },
   list: async () => {
