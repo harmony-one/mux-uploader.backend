@@ -28,7 +28,11 @@ httpAPI.get("/videos", videoListRoute);
 httpAPI.get("/videos/:videoId", videoRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
 
+httpAPI.use((req: Request, res: Response) => {
+  return res.sendStatus(404);
+});
+
 httpAPI.use((err: Error, req: Request, res: Response) => {
   logger.error("error handler", err);
-  res.status(500).send("Something wrong!");
+  return res.status(500).send("Something wrong!");
 });

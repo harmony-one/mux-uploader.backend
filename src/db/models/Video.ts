@@ -1,11 +1,11 @@
 import {
   Table,
   Model,
+  DataType,
   CreatedAt,
   UpdatedAt,
   Column,
   PrimaryKey,
-  DataType,
 } from "sequelize-typescript";
 
 import { Optional } from "sequelize";
@@ -25,12 +25,13 @@ interface VideoAttributes {
   awsKey: string;
   createdAt: string;
   updatedAt: string;
+  thumbnail: string;
 }
 
 interface VideoCreationAttributes
   extends Optional<
     VideoAttributes,
-    "createdAt" | "updatedAt" | "muxPlaybackId"
+    "createdAt" | "updatedAt" | "muxPlaybackId" | "thumbnail"
   > {}
 
 @Table
@@ -58,4 +59,15 @@ export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
   createdAt: Date;
   @UpdatedAt
   updatedAt: Date;
+
+  @Column({
+    type: DataType.VIRTUAL,
+    get: function () {
+      return {
+        // @ts-ignore
+        regular: `https://image.mux.com/${this.muxPlaybackId}/thumbnail.jpg`,
+      };
+    },
+  })
+  thumbnails: string;
 }
