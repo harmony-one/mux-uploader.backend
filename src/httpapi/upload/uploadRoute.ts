@@ -9,6 +9,7 @@ import { VideoDAL } from "../../dal/video";
 export const uploadRouteValidators = [
   body("name").isLength({ min: 244 }).trim().escape(),
   body("description").trim().escape(),
+  body("url").trim().escape(),
 ];
 
 export const uploadRoute = async (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export const uploadRoute = async (req: Request, res: Response) => {
     return res.json({ files: Object.keys(req.files || {}) });
   }
 
-  const { name = "", description = "" } = req.body;
+  const { name = "", description = "", url = "" } = req.body;
 
   const file = req.files.video as UploadedFile;
 
@@ -40,6 +41,7 @@ export const uploadRoute = async (req: Request, res: Response) => {
     awsKey,
     awsURL: sendData.Location,
     name: name,
+    url: url,
     description: description,
   });
 };

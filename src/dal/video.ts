@@ -7,6 +7,7 @@ interface CreateVideoAttr {
   awsKey: string;
   name: string;
   description: string;
+  url: string;
 }
 
 export const VideoDAL = {
@@ -19,6 +20,7 @@ export const VideoDAL = {
       awsURL: params.awsURL,
       name: params.name,
       description: params.description,
+      url: params.url,
     });
   },
   list: async () => {
