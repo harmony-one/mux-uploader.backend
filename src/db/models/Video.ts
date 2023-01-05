@@ -23,6 +23,7 @@ interface VideoAttributes {
   awsURL: string;
   awsKey: string;
   name: string;
+  url: string;
   description: string;
   createdAt: string;
   updatedAt: string;
@@ -60,6 +61,9 @@ export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
 
   @Column
   description: string;
+
+  @Column
+  url: string;
 
   @CreatedAt
   createdAt: Date;
