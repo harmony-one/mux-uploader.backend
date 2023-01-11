@@ -31,7 +31,7 @@ httpAPI.use((req: Request, res: Response) => {
   return res.sendStatus(404);
 });
 
-httpAPI.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+httpAPI.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.error("error handler", err);
   return res.status(500).send("Something wrong!");
 });
