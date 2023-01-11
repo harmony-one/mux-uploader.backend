@@ -24,6 +24,13 @@ interface AppConfig {
       secretAccessKey: string;
     };
   };
+  storj: {
+    endpoint: string;
+    region: string;
+    bucket: string;
+    accessKeyId: string;
+    secretAccessKey: string;
+  };
   mux: {
     tokenId: string;
     tokenSecret: string;
@@ -61,6 +68,13 @@ export const config: AppConfig = {
       accessKeyId: process.env.S3_ACCESS_KEY || "",
       secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
     },
+  },
+  storj: {
+    endpoint: process.env.STORJ_ENTRYPOINT || "",
+    region: process.env.STORJ_REGION || "",
+    bucket: process.env.STORJ_BUCKET || "",
+    accessKeyId: process.env.STORJ_ACCESS_KEY || "",
+    secretAccessKey: process.env.STORJ_SECRET_ACCESS_KEY || "",
   },
   mux: {
     tokenId: process.env.MUX_TOKEN_ID || "",
