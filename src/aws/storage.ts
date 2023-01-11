@@ -1,6 +1,6 @@
 import S3 from "aws-sdk/clients/s3";
 import * as Buffer from "buffer";
-import { config } from "../config";
+import { config } from "../config/config";
 
 const DEFAULT_EXPIRES_TIME = 60 * 60 * 24;
 

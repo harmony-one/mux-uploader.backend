@@ -1,5 +1,5 @@
 import Mux from "@mux/mux-node";
-import { config } from "../config";
+import { config } from "../config/config";
 import { runAssetWatcher } from "./assetWatcher";
 
 const { Video } = new Mux(config.mux.tokenId, config.mux.tokenSecret);

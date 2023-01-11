@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Mux from "@mux/mux-node";
-import { config } from "../../config";
+import { config } from "../../config/config";
 import {
   MuxEventName,
   MuxEvents,
