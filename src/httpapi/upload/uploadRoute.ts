@@ -28,6 +28,7 @@ export const uploadRoute = async (req: Request, res: Response) => {
   res.json({
     data: {
       id,
+      url,
     },
   });
 

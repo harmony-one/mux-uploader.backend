@@ -4,7 +4,12 @@ import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import { uploadRoute, uploadRouteValidators } from "./upload/uploadRoute";
 import { videoListRoute } from "./video/videoListRoute";
-import { videoMuxAssetRoute, videoRoute } from "./video/videoRoute";
+import {
+  videoBySequenceIdRoute,
+  videoByUrlRoute,
+  videoMuxAssetRoute,
+  videoByIdRoute,
+} from "./video/videoRoute";
 import { logger } from "../logger";
 import { muxWebhook } from "./webhooks/muxWebhook";
 
@@ -24,7 +29,9 @@ httpAPI.get("/", (req, res) => {
 });
 httpAPI.post("/upload", fileUpload(), uploadRouteValidators, uploadRoute);
 httpAPI.get("/videos", videoListRoute);
-httpAPI.get("/videos/:videoId", videoRoute);
+httpAPI.get("/videos/url/:vanityUrl", videoByUrlRoute);
+httpAPI.get("/videos/bySequenceId/:sequenceId", videoBySequenceIdRoute);
+httpAPI.get("/videos/:videoId", videoByIdRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
 
 httpAPI.use((req: Request, res: Response) => {
