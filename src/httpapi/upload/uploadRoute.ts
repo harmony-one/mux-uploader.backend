@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { UploadedFile } from "express-fileupload";
 import { body } from "express-validator";
-import { s3Api } from "../../aws";
+import { storage } from "../../aws/storage";
 import { mux } from "../../mux";
 import { VideoDAL } from "../../dal/video";
 
@@ -23,7 +23,7 @@ export const uploadRoute = async (req: Request, res: Response) => {
 
   const id = uuidv4();
   const ext = file.name.split(".").pop();
-  const awsKey = id + "." + ext;
+  const objectKey = id + "." + ext;
 
   res.json({
     data: {
@@ -31,14 +31,15 @@ export const uploadRoute = async (req: Request, res: Response) => {
     },
   });
 
-  const sendData = await s3Api.uploadFile(file.data, id + "." + ext);
+  const sendData = await storage.uploadFile(file.data, objectKey);
 
-  const asset = await mux.createAsset(id, sendData.Location);
+  const signedUrl = await storage.getSignedUrl(objectKey);
+  const asset = await mux.createAsset(id, signedUrl);
 
   await VideoDAL.createVideo({
     id,
     muxAssetId: asset.id,
-    awsKey,
+    awsKey: objectKey,
     awsURL: sendData.Location,
     name: name,
     url: url,

@@ -1,4 +1,4 @@
-import express, { Response, Request } from "express";
+import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
@@ -31,7 +31,7 @@ httpAPI.use((req: Request, res: Response) => {
   return res.sendStatus(404);
 });
 
-httpAPI.use((err: Error, req: Request, res: Response) => {
+httpAPI.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   logger.error("error handler", err);
   return res.status(500).send("Something wrong!");
 });

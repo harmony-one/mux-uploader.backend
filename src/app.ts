@@ -1,6 +1,6 @@
 import { sequelize } from "./db/models";
-import { httpAPI } from "./httpapi";
-import { config } from "./config";
+import { httpAPI } from "./httpapi/httpApi";
+import { config } from "./config/config";
 import { logger } from "./logger";
 import { mux } from "./mux";
 
