@@ -1,4 +1,4 @@
-import { MuxAssetStatus, Video } from "../db/models/Video";
+import { MuxAssetStatus, VideoModel } from "../db/models/VideoModel";
 
 interface CreateVideoAttr {
   id: string;
@@ -14,7 +14,7 @@ const DEFAULT_LIMIT = 10;
 
 export const VideoDAL = {
   createVideo: async (params: CreateVideoAttr) => {
-    return Video.create({
+    return VideoModel.create({
       id: params.id,
       muxAssetStatus: MuxAssetStatus.PREPARING,
       muxAssetId: params.muxAssetId,
@@ -26,29 +26,29 @@ export const VideoDAL = {
     });
   },
   list: async (limit = DEFAULT_LIMIT) => {
-    return Video.findAll({ order: [["createdAt", "DESC"]], limit: limit });
+    return VideoModel.findAll({ order: [["createdAt", "DESC"]], limit: limit });
   },
 
   listPreparingVideo: async (limit = DEFAULT_LIMIT) => {
-    return Video.findAll({
+    return VideoModel.findAll({
       where: { muxAssetStatus: MuxAssetStatus.PREPARING },
       limit: limit,
     });
   },
 
   get: async (videoId: string) => {
-    return Video.findByPk(videoId);
+    return VideoModel.findByPk(videoId);
   },
 
   getByUrl: async (vanityUrl: string) => {
-    return Video.findOne({ where: { url: vanityUrl } });
+    return VideoModel.findOne({ where: { url: vanityUrl } });
   },
 
   getBySequenceId: async (sequenceId: string) => {
-    return Video.findOne({ where: { sequenceId } });
+    return VideoModel.findOne({ where: { sequenceId } });
   },
 
   getByMuxAssetId: async (muxAssetId: string) => {
-    return Video.findOne({ where: { muxAssetId: muxAssetId } });
+    return VideoModel.findOne({ where: { muxAssetId: muxAssetId } });
   },
 };

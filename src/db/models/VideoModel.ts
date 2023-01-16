@@ -40,7 +40,10 @@ interface VideoCreationAttributes
   > {}
 
 @Table
-export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
+export class VideoModel extends Model<
+  VideoAttributes,
+  VideoCreationAttributes
+> {
   @PrimaryKey
   @Column
   id: string;

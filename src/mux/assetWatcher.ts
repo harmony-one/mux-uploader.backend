@@ -1,10 +1,10 @@
-import { MuxAssetStatus, Video } from "../db/models/Video";
+import { MuxAssetStatus, VideoModel } from "../db/models/VideoModel";
 import { mux } from "./index";
 import { VideoDAL } from "../dal/video";
 import { ONE_HOUR } from "../constants/dates";
 import { logger } from "../logger";
 
-export const updatePlaybackId = async (video: Video) => {
+export const updatePlaybackId = async (video: VideoModel) => {
   const asset = await mux.loadAsset(video.muxAssetId);
 
   if (!asset) {
