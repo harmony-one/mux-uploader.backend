@@ -1,6 +1,7 @@
 import {
   Table,
   Model,
+  Default,
   DataType,
   CreatedAt,
   UpdatedAt,
@@ -8,7 +9,7 @@ import {
   PrimaryKey,
 } from "sequelize-typescript";
 
-import { Optional } from "sequelize";
+import { Optional, Sequelize } from "sequelize";
 
 export enum MuxAssetStatus {
   PREPARING = "preparing",
@@ -29,12 +30,13 @@ interface VideoAttributes {
   createdAt: string;
   updatedAt: string;
   thumbnail: string;
+  sequenceId: string;
 }
 
 interface VideoCreationAttributes
   extends Optional<
-    VideoAttributes,
-    "createdAt" | "updatedAt" | "muxPlaybackId" | "thumbnail"
+    Omit<VideoAttributes, "createdAt" | "updatedAt" | "sequenceId">,
+    "muxPlaybackId" | "thumbnail"
   > {}
 
 @Table
@@ -66,6 +68,13 @@ export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
 
   @Column
   url: string;
+
+  @Default(Sequelize.literal("nextval('video_sequence')"))
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+  })
+  sequenceId: string;
 
   @CreatedAt
   createdAt: Date;

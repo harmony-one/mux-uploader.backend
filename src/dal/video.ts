@@ -10,6 +10,8 @@ interface CreateVideoAttr {
   url: string;
 }
 
+const DEFAULT_LIMIT = 10;
+
 export const VideoDAL = {
   createVideo: async (params: CreateVideoAttr) => {
     return Video.create({
@@ -23,19 +25,27 @@ export const VideoDAL = {
       url: params.url,
     });
   },
-  list: async () => {
-    return Video.findAll({ order: [["createdAt", "DESC"]] });
+  list: async (limit = DEFAULT_LIMIT) => {
+    return Video.findAll({ order: [["createdAt", "DESC"]], limit: limit });
   },
 
-  listPreparingVideo: async () => {
+  listPreparingVideo: async (limit = DEFAULT_LIMIT) => {
     return Video.findAll({
       where: { muxAssetStatus: MuxAssetStatus.PREPARING },
-      limit: 10,
+      limit: limit,
     });
   },
 
   get: async (videoId: string) => {
     return Video.findByPk(videoId);
+  },
+
+  getByUrl: async (vanityUrl: string) => {
+    return Video.findOne({ where: { url: vanityUrl } });
+  },
+
+  getBySequenceId: async (sequenceId: string) => {
+    return Video.findOne({ where: { sequenceId } });
   },
 
   getByMuxAssetId: async (muxAssetId: string) => {
