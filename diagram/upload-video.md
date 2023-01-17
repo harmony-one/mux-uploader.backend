@@ -2,19 +2,22 @@
 sequenceDiagram
     participant User
     participant VideoService
-    participant AWS
+    participant Storj
     participant MUX
     User ->> VideoService: Upload file
     VideoService ->> User: Return Asset ID
-    VideoService ->> AWS: Upload
+    VideoService ->> Storj: Upload
     VideoService ->> MUX: Create Asset
     MUX ->> VideoService: Asset ID
     
-    MUX --> AWS: Download media from storage
+    MUX --> Storj: Download media from storage
     MUX ->> MUX: transcoding
-    MUX ->> VideoService: Playpack ID and other meta
+    MUX ->> VideoService: Return Playpack ID and other meta
+    VideoService --> User: Return Playack ID
+    User ->> MUX: Request thumbnails, video and audio with PlaybackId
+    MUX ->> User: Send files
 ```
 
-AWS role:
+Storj role:
 - store origin files
-- mux grabs video file from AWS for transcoding
+- mux grabs video file from Storj for transcoding
