@@ -13,7 +13,8 @@ sequenceDiagram
     MUX --> Storj: Download media from storage
     MUX ->> MUX: transcoding
     MUX ->> VideoService: Return Playpack ID and other meta
-    VideoService --> User: Return Playack ID
+    User ->> VideoService: Request video by id or vanity url
+    VideoService ->> User: Return Playack ID and other meta
     User ->> MUX: Request thumbnails, video and audio with PlaybackId
     MUX ->> User: Send files
 ```
