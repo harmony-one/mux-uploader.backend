@@ -39,7 +39,7 @@ interface VideoCreationAttributes
     "muxPlaybackId" | "thumbnail"
   > {}
 
-@Table
+@Table({ tableName: "Videos" })
 export class VideoModel extends Model<
   VideoAttributes,
   VideoCreationAttributes
