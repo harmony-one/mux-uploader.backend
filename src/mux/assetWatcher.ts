@@ -1,6 +1,6 @@
 import { MuxAssetStatus, VideoModel } from "../db/models/VideoModel";
 import { mux } from "./index";
-import { VideoDAL } from "../dal/video";
+import { VideoDAL } from "../dal/VideoDAL";
 import { ONE_HOUR } from "../constants/dates";
 import { logger } from "../logger";
 

@@ -4,7 +4,7 @@ import { UploadedFile } from "express-fileupload";
 import { body } from "express-validator";
 import { storage } from "../../aws/storage";
 import { mux } from "../../mux";
-import { VideoDAL } from "../../dal/video";
+import { VideoDAL } from "../../dal/VideoDAL";
 
 export const uploadRouteValidators = [
   body("name").isLength({ min: 244 }).trim().escape(),

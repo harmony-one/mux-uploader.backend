@@ -8,7 +8,7 @@ import {
 } from "../../mux/muxTypes";
 import { logger } from "../../logger";
 import { updatePlaybackId } from "../../mux/assetWatcher";
-import { VideoDAL } from "../../dal/video";
+import { VideoDAL } from "../../dal/VideoDAL";
 
 const onAssetReady = async (muxEvent: MuxEventVideoAssetReady) => {
   const video = await VideoDAL.getByMuxAssetId(muxEvent.data.id);
