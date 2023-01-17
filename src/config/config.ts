@@ -8,6 +8,7 @@ export enum AppEnv {
 
 interface AppConfig {
   appEnv: AppEnv;
+  jwtSecret: string;
   port: number;
   db: {
     username: string;
@@ -53,6 +54,7 @@ function getAppEnv(envStr: string | undefined) {
 
 export const config: AppConfig = {
   appEnv: getAppEnv(process.env.APP_ENV),
+  jwtSecret: process.env.JWT_SECRET || "",
   port: parseInt(process.env.PORT || "3001", 10),
   db: {
     username: process.env.DB_USER || "",

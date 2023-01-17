@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { VideoDAL } from "../../dal/video";
+import { VideoDAL } from "../../dal/VideoDAL";
 import { mux } from "../../mux";
 
 export const videoByIdRoute = async (req: Request, res: Response) => {

@@ -39,8 +39,11 @@ interface VideoCreationAttributes
     "muxPlaybackId" | "thumbnail"
   > {}
 
-@Table
-export class Video extends Model<VideoAttributes, VideoCreationAttributes> {
+@Table({ tableName: "Videos" })
+export class VideoModel extends Model<
+  VideoAttributes,
+  VideoCreationAttributes
+> {
   @PrimaryKey
   @Column
   id: string;
