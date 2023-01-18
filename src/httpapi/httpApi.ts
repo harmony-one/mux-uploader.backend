@@ -1,8 +1,7 @@
 import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import fileUpload from "express-fileupload";
-import { uploadRoute, uploadRouteValidators } from "./upload/uploadRoute";
+import { uploadRouter } from "./upload/uploadRouter";
 import { videoListRoute } from "./video/videoListRoute";
 import {
   videoBySequenceIdRoute,
@@ -30,7 +29,8 @@ httpAPI.use(passportMiddleware.initialize());
 httpAPI.get("/", (req, res) => {
   return res.json({ ok: true });
 });
-httpAPI.post("/upload", fileUpload(), uploadRouteValidators, uploadRoute);
+
+httpAPI.use("/", uploadRouter);
 httpAPI.get("/videos", videoListRoute);
 httpAPI.get("/videos/url/:vanityUrl", videoByUrlRoute);
 httpAPI.get("/videos/bySequenceId/:sequenceId", videoBySequenceIdRoute);
