@@ -31,12 +31,21 @@ interface VideoAttributes {
   updatedAt: string;
   thumbnail: string;
   sequenceId: string;
+  ownerId: string;
 }
 
-interface VideoCreationAttributes
+export interface VideoCreationAttributes
   extends Optional<
     Omit<VideoAttributes, "createdAt" | "updatedAt" | "sequenceId">,
-    "muxPlaybackId" | "thumbnail"
+    | "muxAssetId"
+    | "muxPlaybackId"
+    | "awsURL"
+    | "awsKey"
+    | "name"
+    | "url"
+    | "description"
+    | "thumbnail"
+    | "ownerId"
   > {}
 
 @Table({ tableName: "Videos" })
@@ -48,28 +57,58 @@ export class VideoModel extends Model<
   @Column
   id: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  ownerId: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   muxAssetId: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   muxPlaybackId: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   muxAssetStatus: MuxAssetStatus;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   awsURL: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   awsKey: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   name: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   description: string;
 
-  @Column
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
   url: string;
 
   @Default(Sequelize.literal("nextval('video_sequence')"))

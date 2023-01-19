@@ -1,19 +1,21 @@
 import { MuxAssetStatus, VideoModel } from "../db/models/VideoModel";
+import { sequelize } from "../db/models";
 
 interface CreateVideoAttr {
   id: string;
-  muxAssetId: string;
-  awsURL: string;
-  awsKey: string;
-  name: string;
-  description: string;
-  url: string;
+  muxAssetId?: string;
+  awsURL?: string;
+  awsKey?: string;
+  name?: string;
+  description?: string;
+  url?: string;
+  ownerId?: string;
 }
 
 const DEFAULT_LIMIT = 10;
 
 export const VideoDAL = {
-  createVideo: async (params: CreateVideoAttr) => {
+  createAnonVideo: async (params: CreateVideoAttr) => {
     return VideoModel.create({
       id: params.id,
       muxAssetStatus: MuxAssetStatus.PREPARING,
@@ -23,6 +25,26 @@ export const VideoDAL = {
       name: params.name,
       description: params.description,
       url: params.url,
+    });
+  },
+  createUserVideo: async (params: { id: string; ownerId: string }) => {
+    return await sequelize.transaction(async (tx) => {
+      const count = await VideoModel.count({
+        where: { ownerId: params.ownerId },
+        transaction: tx,
+      });
+
+      const url = `${count + 1}`;
+
+      return VideoModel.create(
+        {
+          id: params.id,
+          muxAssetStatus: MuxAssetStatus.PREPARING,
+          url: url,
+          ownerId: params.ownerId,
+        },
+        { transaction: tx }
+      );
     });
   },
   list: async (limit = DEFAULT_LIMIT) => {
@@ -38,6 +60,18 @@ export const VideoDAL = {
 
   get: async (videoId: string) => {
     return VideoModel.findByPk(videoId);
+  },
+
+  getUserVideoList: async (userId: string) => {
+    return VideoModel.findAll({
+      where: { ownerId: userId },
+      limit: DEFAULT_LIMIT,
+      order: [["createdAt", "DESC"]],
+    });
+  },
+
+  getUserVideoByURL: async (userId: string, url: string) => {
+    return VideoModel.findOne({ where: { url: url, ownerId: userId } });
   },
 
   getByUrl: async (vanityUrl: string) => {

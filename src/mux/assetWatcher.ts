@@ -1,7 +1,8 @@
 import { MuxAssetStatus, VideoModel } from "../db/models/VideoModel";
 import { mux } from "./index";
+import { config } from "../config/config";
 import { VideoDAL } from "../dal/VideoDAL";
-import { ONE_HOUR } from "../constants/dates";
+import { ONE_SECOND } from "../constants/dates";
 import { logger } from "../logger";
 
 export const updatePlaybackId = async (video: VideoModel) => {
@@ -47,5 +48,5 @@ export const runAssetWatcher = () => {
       logger.error("mux sync error", err);
     });
     runAssetWatcher();
-  }, ONE_HOUR * 5);
+  }, ONE_SECOND * config.mux.syncInterval);
 };

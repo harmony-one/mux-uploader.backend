@@ -1,8 +1,7 @@
 import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import fileUpload from "express-fileupload";
-import { uploadRoute, uploadRouteValidators } from "./upload/uploadRoute";
+import { uploadRouter } from "./upload/uploadRouter";
 import { videoListRoute } from "./video/videoListRoute";
 import {
   videoBySequenceIdRoute,
@@ -14,6 +13,8 @@ import { logger } from "../logger";
 import { muxWebhook } from "./webhooks/muxWebhook";
 import { authWeb3Router } from "./auth/authWeb3Router";
 import { passportMiddleware } from "./passport";
+import fileUpload from "express-fileupload";
+import { addressRouter } from "./address/addressRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -25,17 +26,20 @@ httpAPI.post(
 );
 
 httpAPI.use(bodyParser.json());
+httpAPI.use(fileUpload());
 httpAPI.use(passportMiddleware.initialize());
 
 httpAPI.get("/", (req, res) => {
   return res.json({ ok: true });
 });
-httpAPI.post("/upload", fileUpload(), uploadRouteValidators, uploadRoute);
+
+httpAPI.use("/", uploadRouter);
 httpAPI.get("/videos", videoListRoute);
 httpAPI.get("/videos/url/:vanityUrl", videoByUrlRoute);
 httpAPI.get("/videos/bySequenceId/:sequenceId", videoBySequenceIdRoute);
 httpAPI.get("/videos/:videoId", videoByIdRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
+httpAPI.use("/address", addressRouter);
 httpAPI.use("/auth/web3", authWeb3Router);
 
 httpAPI.use((req: Request, res: Response) => {
