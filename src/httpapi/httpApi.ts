@@ -14,6 +14,7 @@ import { muxWebhook } from "./webhooks/muxWebhook";
 import { authWeb3Router } from "./auth/authWeb3Router";
 import { passportMiddleware } from "./passport";
 import fileUpload from "express-fileupload";
+import { addressRouter } from "./address/addressRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -38,6 +39,7 @@ httpAPI.get("/videos/url/:vanityUrl", videoByUrlRoute);
 httpAPI.get("/videos/bySequenceId/:sequenceId", videoBySequenceIdRoute);
 httpAPI.get("/videos/:videoId", videoByIdRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
+httpAPI.use("/address", addressRouter);
 httpAPI.use("/auth/web3", authWeb3Router);
 
 httpAPI.use((req: Request, res: Response) => {

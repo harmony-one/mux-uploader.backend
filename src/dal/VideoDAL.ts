@@ -34,7 +34,7 @@ export const VideoDAL = {
         transaction: tx,
       });
 
-      const url = `/${count + 1}`;
+      const url = `${count + 1}`;
 
       return VideoModel.create(
         {
@@ -60,6 +60,18 @@ export const VideoDAL = {
 
   get: async (videoId: string) => {
     return VideoModel.findByPk(videoId);
+  },
+
+  getUserVideoList: async (userId: string) => {
+    return VideoModel.findAll({
+      where: { ownerId: userId },
+      limit: DEFAULT_LIMIT,
+      order: [["createdAt", "DESC"]],
+    });
+  },
+
+  getUserVideoByURL: async (userId: string, url: string) => {
+    return VideoModel.findOne({ where: { url: url, ownerId: userId } });
   },
 
   getByUrl: async (vanityUrl: string) => {
