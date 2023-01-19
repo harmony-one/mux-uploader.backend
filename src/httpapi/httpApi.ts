@@ -13,6 +13,7 @@ import { logger } from "../logger";
 import { muxWebhook } from "./webhooks/muxWebhook";
 import { authWeb3Router } from "./auth/authWeb3Router";
 import { passportMiddleware } from "./passport";
+import fileUpload from "express-fileupload";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -24,6 +25,7 @@ httpAPI.post(
 );
 
 httpAPI.use(bodyParser.json());
+httpAPI.use(fileUpload());
 httpAPI.use(passportMiddleware.initialize());
 
 httpAPI.get("/", (req, res) => {

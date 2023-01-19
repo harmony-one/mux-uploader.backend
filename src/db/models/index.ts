@@ -9,3 +9,5 @@ export const sequelize = new Sequelize({
   ...(dbConfig as SequelizeOptions),
   models: [VideoModel, UserModel],
 });
+
+VideoModel.belongsTo(UserModel, { foreignKey: "id" });
