@@ -15,6 +15,7 @@ import { authWeb3Router } from "./auth/authWeb3Router";
 import { passportMiddleware } from "./passport";
 import fileUpload from "express-fileupload";
 import { addressRouter } from "./address/addressRouter";
+import { messagesRouter } from "./messages/messagesRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -41,6 +42,7 @@ httpAPI.get("/videos/:videoId", videoByIdRoute);
 httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
 httpAPI.use("/address", addressRouter);
 httpAPI.use("/auth/web3", authWeb3Router);
+httpAPI.use("/messages", messagesRouter);
 
 httpAPI.use((req: Request, res: Response) => {
   return res.sendStatus(404);
