@@ -66,8 +66,8 @@ https://www.npmjs.com/package/sequelize-typescript
 
 ```
 npm run build
-docker build . --platform linux/amd64 -t ahiipsa/shorts-reels-videos.backend:0.0.1
-docker push ahiipsa/shorts-reels-videos.backend:0.0.1 
+docker build . --platform linux/amd64 -t ahiipsa/shorts-reels-videos.backend:latest
+docker push ahiipsa/shorts-reels-videos.backend:latest 
 ```
 
 #### Copy .env to project root dir
