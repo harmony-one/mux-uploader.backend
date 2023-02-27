@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { ONE_MINUTE } from "../constants/dates";
 
 export enum AppEnv {
   PRODUCTION = "production",
@@ -83,6 +84,7 @@ export const config: AppConfig = {
     tokenId: process.env.MUX_TOKEN_ID || "",
     tokenSecret: process.env.MUX_TOKEN_SECRET || "",
     webhookSecret: process.env.MUX_WEBHOOK_SECRET || "",
-    syncInterval: parseInt(process.env.MUX_SYNC_INTERVAL || "0", 10) || 3600,
+    syncInterval:
+      parseInt(process.env.MUX_SYNC_INTERVAL || "0", 10) || ONE_MINUTE * 10,
   },
 };
