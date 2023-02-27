@@ -16,6 +16,7 @@ import { passportMiddleware } from "./passport";
 import fileUpload from "express-fileupload";
 import { addressRouter } from "./address/addressRouter";
 import { messagesRouter } from "./messages/messagesRouter";
+import { sequelize } from "../db/models";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -43,6 +44,20 @@ httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
 httpAPI.use("/address", addressRouter);
 httpAPI.use("/auth/web3", authWeb3Router);
 httpAPI.use("/messages", messagesRouter);
+httpAPI.use("/_health", async (req, res) => {
+  const dbConnection = await sequelize
+    .authenticate()
+    .then(() => true)
+    .catch(() => false);
+  const data = {
+    uptime: Math.round(process.uptime()),
+    dbConnection,
+    message: "ok",
+    timestamp: Math.round(Date.now() / 1000),
+  };
+
+  res.status(200).send(data);
+});
 
 httpAPI.use((req: Request, res: Response) => {
   return res.sendStatus(404);
