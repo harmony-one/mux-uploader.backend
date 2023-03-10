@@ -17,6 +17,7 @@ import fileUpload from "express-fileupload";
 import { addressRouter } from "./address/addressRouter";
 import { messagesRouter } from "./messages/messagesRouter";
 import { sequelize } from "../db/models";
+import { domainsRouter } from "./domain/domainRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -44,6 +45,7 @@ httpAPI.get("/videos/:videoId/muxAsset", videoMuxAssetRoute);
 httpAPI.use("/address", addressRouter);
 httpAPI.use("/auth/web3", authWeb3Router);
 httpAPI.use("/messages", messagesRouter);
+httpAPI.use("/domains", domainsRouter);
 httpAPI.use("/_health", async (req, res) => {
   const dbConnection = await sequelize
     .authenticate()
