@@ -11,6 +11,10 @@ interface AppConfig {
   appEnv: AppEnv;
   jwtSecret: string;
   port: number;
+  harmony: {
+    rpc: string;
+    registerContract: string;
+  };
   db: {
     username: string;
     password: string;
@@ -58,6 +62,10 @@ export const config: AppConfig = {
   appEnv: getAppEnv(process.env.APP_ENV),
   jwtSecret: process.env.JWT_SECRET || "",
   port: parseInt(process.env.PORT || "3001", 10),
+  harmony: {
+    rpc: process.env.HMY_RPC || "",
+    registerContract: process.env.RC_CONTRACT || "",
+  },
   db: {
     username: process.env.DB_USER || "",
     password: process.env.DB_PASSWORD || "",
