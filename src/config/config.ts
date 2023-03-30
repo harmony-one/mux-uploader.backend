@@ -13,7 +13,7 @@ interface AppConfig {
   port: number;
   harmony: {
     rpc: string;
-    registerContract: string;
+    dcContract: string;
   };
   db: {
     username: string;
@@ -64,7 +64,7 @@ export const config: AppConfig = {
   port: parseInt(process.env.PORT || "3001", 10),
   harmony: {
     rpc: process.env.HMY_RPC || "",
-    registerContract: process.env.RC_CONTRACT || "",
+    dcContract: process.env.DC_CONTRACT || "",
   },
   db: {
     username: process.env.DB_USER || "",

@@ -12,6 +12,9 @@ export interface DomainAttributes {
   id: string;
   domain: string;
   createdTxHash: string;
+  bgColor?: string;
+  owner?: string;
+  referral?: string;
 }
 
 export interface DomainCreationAttributes extends DomainAttributes {}
@@ -36,6 +39,24 @@ export class DomainModel extends Model<
     allowNull: false,
   })
   createdTxHash: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  bgColor: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  owner: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  referral: string;
 
   @CreatedAt
   createdAt: Date;
