@@ -19,6 +19,7 @@ import { addressRouter } from "./address/addressRouter";
 import { messagesRouter } from "./messages/messagesRouter";
 import { sequelize } from "../db/models";
 import { domainsRouter } from "./domain/domainRouter";
+import { ratesRouter } from "./rates/ratesRoute";
 
 const reteLimiter = rateLimit({
   windowMs: 3 * 60 * 1000,
@@ -55,6 +56,7 @@ httpAPI.use("/address", addressRouter);
 httpAPI.use("/auth/web3", authWeb3Router);
 httpAPI.use("/messages", messagesRouter);
 httpAPI.use("/domains", domainsRouter);
+httpAPI.use("/rates", ratesRouter);
 httpAPI.use("/_health", async (req, res) => {
   const dbConnection = await sequelize
     .authenticate()

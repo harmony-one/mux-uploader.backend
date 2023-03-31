@@ -15,6 +15,10 @@ interface AppConfig {
     rpc: string;
     dcContract: string;
   };
+  coinmarketcap: {
+    key: string;
+    host: string;
+  };
   db: {
     username: string;
     password: string;
@@ -65,6 +69,10 @@ export const config: AppConfig = {
   harmony: {
     rpc: process.env.HMY_RPC || "",
     dcContract: process.env.DC_CONTRACT || "",
+  },
+  coinmarketcap: {
+    key: process.env.COINMARKETCAP_KEY || "",
+    host: "https://pro-api.coinmarketcap.com",
   },
   db: {
     username: process.env.DB_USER || "",
