@@ -1,15 +1,31 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { DomainDAL } from "../../dal/DomainDAL";
 import { checkSchema, validationResult } from "express-validator";
-import { jwtAuthRequired } from "../passport";
 import { loadDomainOwner } from "./dcContract";
 import { logger } from "../../logger";
 
 export const domainsRouter = Router();
 
+const domainRegex = /^[a-zA-Z0-9]{1,}((?!-)[a-zA-Z0-9]{0,}|-[a-zA-Z0-9]{1,})+$/;
+
+const getValidation = checkSchema({
+  domainName: {
+    in: "params",
+    matches: {
+      options: [domainRegex],
+    },
+  },
+});
+
 domainsRouter.get(
   "/:domainName",
+  getValidation,
   async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { domainName } = req.params;
 
     const domain = await DomainDAL.get(domainName);
@@ -26,11 +42,21 @@ const createValidation = checkSchema({
   domain: {
     in: "body",
     errorMessage: "domain is wrong",
+    matches: {
+      options: [domainRegex],
+    },
     isString: true,
     trim: true,
     escape: true,
   },
+  referral: {
+    optional: true,
+    matches: {
+      options: [domainRegex],
+    },
+  },
   txHash: {
+    optional: true,
     in: "body",
     errorMessage: "txHash is wrong",
     isString: true,
@@ -79,6 +105,12 @@ const updateValidation = checkSchema({
     trim: true,
     escape: true,
   },
+  domainName: {
+    in: "params",
+    matches: {
+      options: [domainRegex],
+    },
+  },
 });
 
 domainsRouter.put(
@@ -98,7 +130,7 @@ domainsRouter.put(
         const ownerAddress = await loadDomainOwner(domainName);
 
         if (!ownerAddress) {
-          return res.status(403);
+          return res.status(403).json({ errors: ["domain has no owner"] });
         }
 
         domain = await DomainDAL.create({
