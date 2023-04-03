@@ -2,9 +2,9 @@ import { NextFunction, Request, Response, Router } from "express";
 import jwt from "jsonwebtoken";
 import { body, validationResult } from "express-validator";
 import { UserDAL } from "../../dal/UserDAL";
-import { signature } from "../../crypto/signature";
 import { config } from "../../config/config";
 import { jwtAuthRequired } from "../passport";
+import { buildMessage, isValidSignature } from "./authUtils";
 
 export const authWeb3Router = Router();
 const nonceValidator = [body("address").escape().trim().exists()];
@@ -24,6 +24,7 @@ authWeb3Router.post(
       return res.json({
         data: {
           nonce: user.nonce,
+          message: buildMessage(user.nonce),
         },
       });
     }
@@ -33,6 +34,7 @@ authWeb3Router.post(
     return res.json({
       data: {
         nonce: newUser.nonce,
+        message: buildMessage(newUser.nonce),
       },
     });
   }
@@ -58,8 +60,8 @@ authWeb3Router.post(
         return res.sendStatus(404);
       }
 
-      const isSignatureValid = signature({
-        nonce: user.nonce,
+      const isSignatureValid = isValidSignature({
+        message: buildMessage(user.nonce),
         address: user.address,
         signature: req.body.signature,
       });

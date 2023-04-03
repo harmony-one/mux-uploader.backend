@@ -3,6 +3,8 @@ import { DomainDAL } from "../../dal/DomainDAL";
 import { checkSchema, validationResult } from "express-validator";
 import { loadDomainOwner } from "./dcContract";
 import { logger } from "../../logger";
+import { jwtAuthRequired } from "../passport";
+import { UserModel } from "../../db/models/UserModel";
 
 export const domainsRouter = Router();
 
@@ -115,9 +117,16 @@ const updateValidation = checkSchema({
 
 domainsRouter.put(
   "/:domainName",
+  jwtAuthRequired,
   updateValidation,
   async (req: Request, res: Response) => {
     const { domainName } = req.params;
+
+    if (!req.user) {
+      return res.json(401);
+    }
+
+    const currentUser = req.user as UserModel;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -129,8 +138,8 @@ domainsRouter.put(
       if (!domain) {
         const ownerAddress = await loadDomainOwner(domainName);
 
-        if (!ownerAddress) {
-          return res.status(403).json({ errors: ["domain has no owner"] });
+        if (ownerAddress != currentUser.address) {
+          return res.status(403).json({ errors: ["permission denied"] });
         }
 
         domain = await DomainDAL.create({
@@ -147,7 +156,8 @@ domainsRouter.put(
       });
       return res.json({ data: domainUpdated });
     } catch (ex) {
-      return res.status(403).json({ errors: ["internal error"] });
+      logger.error("error domain update", { error: ex });
+      return res.status(500).json({ errors: ["internal error"] });
     }
   }
 );

@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { UserModel } from "../db/models/UserModel";
-import { generateNonce } from "../crypto/signature";
+import { generateNonce } from "../httpapi/auth/authUtils";
 
 interface CreateNewUser {
   address: string;
