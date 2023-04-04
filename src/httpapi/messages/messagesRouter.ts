@@ -1,14 +1,8 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { MessageDAL } from "../../dal/MessagesDAL";
 import { checkSchema, validationResult } from "express-validator";
-import rateLimit from "express-rate-limit";
-
-const reteLimiter = rateLimit({
-  windowMs: 3 * 60 * 1000, // 5 minutes
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+import { createRateLimiter } from "../rateLimit";
+import { ONE_MINUTE } from "../../constants/dates";
 
 export const messagesRouter = Router();
 // const createValidation = [check('domain').exists().isString().trim().escape(), check('content').exists().]
@@ -29,7 +23,7 @@ const createValidation = checkSchema({
 
 messagesRouter.post(
   "/",
-  reteLimiter,
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 10 }),
   createValidation,
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
@@ -114,7 +108,7 @@ const deleteValidation = checkSchema({
 
 messagesRouter.delete(
   "/:messageId",
-  reteLimiter,
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   deleteValidation,
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);

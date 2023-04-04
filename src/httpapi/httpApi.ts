@@ -1,7 +1,6 @@
 import express, { Response, Request, NextFunction } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import rateLimit from "express-rate-limit";
 import { uploadRouter } from "./upload/uploadRouter";
 import { videoListRoute } from "./video/videoListRoute";
 import {
@@ -21,16 +20,8 @@ import { sequelize } from "../db/models";
 import { domainsRouter } from "./domain/domainRouter";
 import { ratesRouter } from "./rates/ratesRoute";
 
-const reteLimiter = rateLimit({
-  windowMs: 3 * 60 * 1000,
-  max: 60,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
 export const httpAPI = express();
 httpAPI.use(cors());
-httpAPI.use(reteLimiter);
 
 httpAPI.post(
   "/webhooks/mux",

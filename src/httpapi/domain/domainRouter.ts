@@ -1,10 +1,12 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Request, Response, Router } from "express";
 import { DomainDAL } from "../../dal/DomainDAL";
 import { checkSchema, validationResult } from "express-validator";
 import { loadDomainOwner } from "./dcContract";
 import { logger } from "../../logger";
 import { jwtAuthRequired } from "../passport";
 import { UserModel } from "../../db/models/UserModel";
+import { createRateLimiter } from "../rateLimit";
+import { ONE_MINUTE } from "../../constants/dates";
 
 export const domainsRouter = Router();
 
@@ -22,7 +24,7 @@ const getValidation = checkSchema({
 domainsRouter.get(
   "/:domainName",
   getValidation,
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -104,8 +106,9 @@ const createValidation = checkSchema({
 
 domainsRouter.post(
   "/",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   createValidation,
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -152,6 +155,7 @@ const updateValidation = checkSchema({
 
 domainsRouter.put(
   "/:domainName",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   jwtAuthRequired,
   updateValidation,
   async (req: Request, res: Response) => {

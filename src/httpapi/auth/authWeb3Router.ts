@@ -5,11 +5,14 @@ import { UserDAL } from "../../dal/UserDAL";
 import { config } from "../../config/config";
 import { jwtAuthRequired } from "../passport";
 import { buildMessage, isValidSignature } from "./authUtils";
+import { createRateLimiter } from "../rateLimit";
+import { ONE_MINUTE } from "../../constants/dates";
 
 export const authWeb3Router = Router();
 const nonceValidator = [body("address").escape().trim().exists()];
 authWeb3Router.post(
   "/nonce",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   nonceValidator,
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -47,6 +50,7 @@ const signatureValidator = [
 
 authWeb3Router.post(
   "/signature",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   signatureValidator,
   async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);

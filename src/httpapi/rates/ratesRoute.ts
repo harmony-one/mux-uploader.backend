@@ -11,7 +11,7 @@ setInterval(() => {
   rateClient.loadONE().then((rate) => {
     oneRateCache = rate;
   });
-}, ONE_MINUTE);
+}, ONE_MINUTE * 10);
 
 const updateRate = () => {
   rateClient

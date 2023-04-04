@@ -7,6 +7,8 @@ import { mux } from "../../mux";
 import { VideoDAL } from "../../dal/VideoDAL";
 import { jwtAuthRequired } from "../passport";
 import { UserModel } from "../../db/models/UserModel";
+import { createRateLimiter } from "../rateLimit";
+import { ONE_MINUTE } from "../../constants/dates";
 
 export const uploadRouteValidators = [
   body("name").isLength({ min: 244 }).trim().escape(),
@@ -18,6 +20,7 @@ export const uploadRouter = Router();
 
 uploadRouter.post(
   "/upload",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 5 }),
   uploadRouteValidators,
   async (req: Request, res: Response) => {
     if (!req.files || !req.files.video) {
@@ -60,6 +63,7 @@ uploadRouter.post(
 
 uploadRouter.post(
   "/create",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   jwtAuthRequired,
   uploadRouteValidators,
   async (req: Request, res: Response) => {
