@@ -11,13 +11,15 @@ import {
 export interface DomainAttributes {
   id: string;
   domain: string;
-  createdTxHash: string;
+  createdAt: Date;
+  updatedAt: Date;
   bgColor?: string;
   owner?: string;
   referral?: string;
 }
 
-export interface DomainCreationAttributes extends DomainAttributes {}
+export interface DomainCreationAttributes
+  extends Omit<DomainAttributes, "createdAt" | "updatedAt"> {}
 
 @Table({ tableName: "Domains" })
 export class DomainModel extends Model<
@@ -33,12 +35,6 @@ export class DomainModel extends Model<
     allowNull: false,
   })
   domain: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  createdTxHash: string;
 
   @Column({
     type: DataType.STRING,

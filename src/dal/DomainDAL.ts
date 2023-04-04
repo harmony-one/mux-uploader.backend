@@ -4,7 +4,6 @@ import { DomainModel } from "../db/models/DomainModel";
 interface CreateNewDomainAttr {
   domain: string;
   referral?: string;
-  createdTxHash?: string;
 }
 
 interface UpdateDomainAttr {
@@ -17,13 +16,21 @@ export const DomainDAL = {
   get: (domainName: string) => {
     return DomainModel.findOne({ where: { domain: domainName } });
   },
+
+  list: ({ offset = 0, limit = 100 }: { offset?: number; limit?: number }) => {
+    return DomainModel.findAll({
+      limit,
+      offset,
+      order: [["createdAt", "ASC"]],
+    });
+  },
+
   create: (params: CreateNewDomainAttr) => {
-    const { domain, createdTxHash = "", referral } = params;
+    const { domain, referral } = params;
     const id = uuidv4();
     return DomainModel.create({
       id: id,
       domain: domain,
-      createdTxHash: createdTxHash,
       referral: referral,
     });
   },

@@ -40,6 +40,41 @@ domainsRouter.get(
   }
 );
 
+const listValidation = checkSchema({
+  offset: {
+    in: "query",
+    isNumeric: true,
+    trim: true,
+    escape: true,
+    optional: true,
+    toInt: true,
+  },
+  limit: {
+    in: "query",
+    isNumeric: true,
+    trim: true,
+    escape: true,
+    optional: true,
+    toInt: true,
+  },
+});
+
+domainsRouter.get("/", listValidation, async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  const { limit, offset } = req.query as unknown as {
+    offset?: number;
+    limit?: number;
+  };
+
+  const domainList = await DomainDAL.list({ offset, limit });
+
+  res.json({ data: domainList });
+});
+
 const createValidation = checkSchema({
   domain: {
     in: "body",
@@ -144,7 +179,6 @@ domainsRouter.put(
 
         domain = await DomainDAL.create({
           domain: domainName,
-          createdTxHash: "",
         });
       }
 

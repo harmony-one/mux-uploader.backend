@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { ONE_MINUTE } from "../../constants/dates";
 import { rateClient } from "./rateClinet";
+import { logger } from "../../logger";
 
 export const ratesRouter = Router();
 
@@ -13,9 +14,14 @@ setInterval(() => {
 }, ONE_MINUTE);
 
 const updateRate = () => {
-  rateClient.loadONE().then((rate) => {
-    oneRateCache = rate;
-  });
+  rateClient
+    .loadONE()
+    .then((rate) => {
+      oneRateCache = rate;
+    })
+    .catch((ex) => {
+      logger.error("load rate error", [ex.message]);
+    });
 };
 
 const runRateWatcher = async () => {
