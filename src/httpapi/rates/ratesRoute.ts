@@ -7,12 +7,6 @@ export const ratesRouter = Router();
 
 let oneRateCache = 0.020740168501869546;
 
-setInterval(() => {
-  rateClient.loadONE().then((rate) => {
-    oneRateCache = rate;
-  });
-}, ONE_MINUTE * 10);
-
 const updateRate = () => {
   rateClient
     .loadONE()
@@ -28,7 +22,7 @@ const runRateWatcher = async () => {
   updateRate();
   setTimeout(() => {
     runRateWatcher();
-  }, ONE_MINUTE);
+  }, ONE_MINUTE * 10);
 };
 
 runRateWatcher();
