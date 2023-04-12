@@ -19,6 +19,7 @@ import { messagesRouter } from "./messages/messagesRouter";
 import { sequelize } from "../db/models";
 import { domainsRouter } from "./domain/domainRouter";
 import { ratesRouter } from "./rates/ratesRoute";
+import { linkRouter } from "./link/linkRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -48,6 +49,8 @@ httpAPI.use("/auth/web3", authWeb3Router);
 httpAPI.use("/messages", messagesRouter);
 httpAPI.use("/domains", domainsRouter);
 httpAPI.use("/rates", ratesRouter);
+httpAPI.use("/links", linkRouter);
+
 httpAPI.use("/_health", async (req, res) => {
   const dbConnection = await sequelize
     .authenticate()
