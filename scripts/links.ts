@@ -44,16 +44,16 @@ const addLinksToDb = async (
 ) => {
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
+    const linkId = i;
     const { rowCount: existedUrlCount } = await client.query(
-      'select * from public."Links" where url = $1',
-      [url]
+      'select * from public."Links" where url = $1 and "linkId" = $2 and "domainId" = $3',
+      [url, linkId, domainId]
     );
     if (existedUrlCount > 0) {
       console.log(`Url ${url} already in DB, skip`);
       continue;
     }
     const id = uuidv4();
-    const linkId = i;
     await client.query(
       'insert into public."Links" ("id", "domainId", "linkId", "url", "createdAt", "updatedAt") values ($1, $2, $3, $4, NOW(), NOW())',
       [id, domainId, linkId, url]
