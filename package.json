@@ -7,7 +7,8 @@
     "start:dev": "npx nodemon",
     "build": "rimraf ./build && tsc",
     "test": "APP_ENV=test npx jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "migrate_links": "ts-node scripts/links.ts"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +16,7 @@
     "@babel/preset-typescript": "^7.16.7",
     "@types/keccak": "^3.0.1",
     "@types/node": "^18.11.18",
+    "@types/pg": "^8.6.6",
     "@types/uuid": "^9.0.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
