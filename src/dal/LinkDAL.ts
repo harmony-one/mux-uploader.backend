@@ -24,14 +24,19 @@ export const LinkDAL = {
   },
   create: async (params: CreateNewLinkAttr) => {
     const id = uuidv4();
-    return LinkModel.create({
-      id,
-      domainId: params.domainId,
-      linkId: params.linkId,
-      isPinned: false,
-      url: params.url,
-      rank: "0",
-    });
+    return LinkModel.create(
+      {
+        id,
+        domainId: params.domainId,
+        linkId: params.linkId,
+        isPinned: false,
+        url: params.url,
+        rank: "0",
+      },
+      {
+        returning: true,
+      }
+    );
   },
   pin: async (id: string, isPinned: boolean) => {
     // Only one link can be pinned

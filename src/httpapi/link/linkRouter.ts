@@ -40,14 +40,14 @@ linkRouter.post(
 
     try {
       const { domainName, linkId, url } = req.body;
-      const domainData = await DomainDAL.get(domainName);
+      const domain = await DomainDAL.get(domainName);
 
-      if (!domainData) {
+      if (!domain) {
         throw new Error(`Domain with name "${domainName}" not found`);
       }
 
       const data = await LinkDAL.create({
-        domainId: domainData?.dataValues.id,
+        domainId: domain?.dataValues.id,
         linkId,
         url,
       });
