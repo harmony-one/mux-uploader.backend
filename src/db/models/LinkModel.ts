@@ -11,6 +11,8 @@ import {
 export interface LinkAttributes {
   id: string;
   domainId: string;
+  linkId: string;
+  isPinned: boolean;
   url: string;
   rank?: string;
 }
@@ -28,6 +30,12 @@ export class LinkModel extends Model<LinkAttributes, LinkCreationAttributes> {
     allowNull: false,
   })
   domainId: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  linkId: string;
 
   @Column({
     type: DataType.STRING,

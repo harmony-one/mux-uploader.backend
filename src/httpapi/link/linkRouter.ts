@@ -14,6 +14,12 @@ const createValidation = checkSchema({
     trim: true,
     escape: true,
   },
+  linkId: {
+    in: "body",
+    errorMessage: "linkId is wrong",
+    isString: true,
+    trim: true,
+  },
   url: {
     in: "body",
     errorMessage: "url is wrong",
@@ -33,7 +39,7 @@ linkRouter.post(
     }
 
     try {
-      const { domainName, url } = req.body;
+      const { domainName, linkId, url } = req.body;
       const domainData = await DomainDAL.get(domainName);
 
       if (!domainData) {
@@ -42,6 +48,7 @@ linkRouter.post(
 
       const data = await LinkDAL.create({
         domainId: domainData?.dataValues.id,
+        linkId,
         url,
       });
 
@@ -105,16 +112,16 @@ linkRouter.get(
 );
 
 const deleteValidation = checkSchema({
-  linkId: {
+  id: {
     in: "params",
-    errorMessage: "linkId is wrong",
+    errorMessage: "id is wrong",
     exists: true,
     isString: true,
   },
 });
 
 linkRouter.delete(
-  "/:linkId",
+  "/:id",
   createRateLimiter({ windowMs: ONE_MINUTE, max: 60 }),
   deleteValidation,
   async (req: Request, res: Response, next: NextFunction) => {
@@ -123,13 +130,56 @@ linkRouter.delete(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { linkId } = req.params;
+    const { id } = req.params;
 
     try {
-      await LinkDAL.destroy(linkId);
+      await LinkDAL.destroy(id);
 
       return res.json({
-        data: linkId,
+        data: id,
+      });
+    } catch (ex) {
+      return next(ex);
+    }
+  }
+);
+
+const pinValidation = checkSchema({
+  id: {
+    in: "body",
+    errorMessage: "id is wrong",
+    isString: true,
+    trim: true,
+  },
+  isPinned: {
+    in: "body",
+    errorMessage: "isPinned is wrong",
+    isBoolean: true,
+  },
+});
+
+linkRouter.post(
+  "/pin",
+  createRateLimiter({ windowMs: ONE_MINUTE, max: 10 }),
+  pinValidation,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      const { id, isPinned = false } = req.body;
+      const link = await LinkDAL.get(id);
+
+      if (!link) {
+        throw new Error(`Link with id "${id}" not found`);
+      }
+
+      const data = await LinkDAL.pin(id, isPinned);
+
+      return res.json({
+        data,
       });
     } catch (ex) {
       return next(ex);
