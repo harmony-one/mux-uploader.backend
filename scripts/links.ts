@@ -2,6 +2,7 @@ import { Client } from "pg";
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
 import { v4 as uuidv4 } from "uuid";
+import { config } from "../src/config/config";
 
 const TweetContractAddress = "0x9af78379C99f8b92aC4fc11aAB69212b6B6F95d0";
 const TweetABI: AbiItem[] = [
@@ -28,10 +29,10 @@ const TweetABI: AbiItem[] = [
 
 const getPgClient = async () => {
   const client = new Client({
-    host: "localhost",
-    database: "appdb_dev",
-    user: "user",
-    password: "password",
+    host: config.db.host,
+    database: config.db.database,
+    user: config.db.username,
+    password: config.db.password,
   });
   await client.connect();
   return client;
