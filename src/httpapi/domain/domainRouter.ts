@@ -40,6 +40,13 @@ domainsRouter.get(
       return res.json({ data: domain });
     }
 
+    const ownerAddress = await loadDomainOwner(domainName);
+
+    if (ownerAddress) {
+      const domainR = await DomainDAL.create({ domain: domainName });
+      return res.json({ data: domainR });
+    }
+
     return res.status(404).json({ errors: ["not found"] });
   }
 );
