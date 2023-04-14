@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo "### run npm build"
+npm run build
+echo "### run docker build"
+docker build . --platform linux/amd64 -t ahiipsa/shorts-reels-videos.backend:latest
+echo "### push to hub"
+docker push ahiipsa/shorts-reels-videos.backend:latest

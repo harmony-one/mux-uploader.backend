@@ -7,6 +7,8 @@ import { jwtAuthRequired } from "../passport";
 import { UserModel } from "../../db/models/UserModel";
 import { createRateLimiter } from "../rateLimit";
 import { ONE_MINUTE } from "../../constants/dates";
+import { DomainModel } from "../../db/models/DomainModel";
+import { Op } from "sequelize";
 
 export const domainsRouter = Router();
 
@@ -59,6 +61,12 @@ const listValidation = checkSchema({
     optional: true,
     toInt: true,
   },
+  hasReferral: {
+    in: "query",
+    isBoolean: true,
+    toBoolean: true,
+    optional: true,
+  },
 });
 
 domainsRouter.get("/", listValidation, async (req: Request, res: Response) => {
@@ -67,10 +75,23 @@ domainsRouter.get("/", listValidation, async (req: Request, res: Response) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { limit, offset } = req.query as unknown as {
+  const { limit, offset, hasReferral } = req.query as unknown as {
     offset?: number;
     limit?: number;
+    hasReferral?: boolean;
   };
+
+  if (hasReferral) {
+    const _domainList = await DomainModel.findAll({
+      where: { referral: { [Op.ne]: "" } },
+      order: [["createdAt", "ASC"]],
+    });
+
+    return res.json({ data: _domainList });
+
+    res.json({ data: _domainList });
+    return;
+  }
 
   const domainList = await DomainDAL.list({ offset, limit });
 
