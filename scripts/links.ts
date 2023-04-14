@@ -44,6 +44,12 @@ const addLinksToDb = async (
 ) => {
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i];
+
+    if (!url) {
+      console.log(`Url "${url}" with index ${i} is not defined, skip`);
+      continue;
+    }
+
     const linkId = i;
     const { rowCount: existedUrlCount } = await client.query(
       'select * from public."Links" where url = $1 and "linkId" = $2 and "domainId" = $3',
@@ -85,7 +91,14 @@ const run = async () => {
       const [, extractedUrl] = url.split("url:");
       return extractedUrl;
     });
-    console.log("Domain", dbDomain.domain, "all urls:", urls);
+    console.log(
+      "Domain",
+      dbDomain.domain,
+      "urls from contract:",
+      urlsRaw,
+      ", parsed urls:",
+      urls
+    );
     await addLinksToDb(pgClient, dbDomain.id, urls);
   }
 
