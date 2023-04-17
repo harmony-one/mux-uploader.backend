@@ -89,8 +89,14 @@ const run = async () => {
       .getAllUrls(dbDomain.domain)
       .call();
     const urls = urlsRaw.map((url: string) => {
-      const [, extractedUrl] = url.split("url:");
-      return extractedUrl;
+      if (url.includes("staking:")) {
+        return url.replace("staking:", ""); // remove first staking: from staking:staking:<address>
+      } else if (url.includes("url:")) {
+        const [, extractedUrl] = url.split("url:");
+        return extractedUrl;
+      } else {
+        console.log(`Url "${url}": unknown pattern`);
+      }
     });
     console.log(
       "Domain",
