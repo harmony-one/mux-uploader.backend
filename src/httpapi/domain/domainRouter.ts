@@ -31,20 +31,24 @@ domainsRouter.get(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { domainName } = req.params;
 
-    const domain = await DomainDAL.get(domainName);
+    try {
+      const domain = await DomainDAL.get(domainName);
 
-    if (domain) {
-      return res.json({ data: domain });
-    }
+      if (domain) {
+        return res.json({ data: domain });
+      }
 
-    const ownerAddress = await loadDomainOwner(domainName);
+      const ownerAddress = await loadDomainOwner(domainName);
 
-    if (ownerAddress) {
-      const domainR = await DomainDAL.create({ domain: domainName });
-      return res.json({ data: domainR });
+      if (ownerAddress) {
+        const domainR = await DomainDAL.create({ domain: domainName });
+        return res.json({ data: domainR });
+      }
+    } catch (ex) {
+      logger.error(`error GET domain ${domainName}`, ex);
+      return res.status(503).json({ errors: ["interval error"] });
     }
 
     return res.status(404).json({ errors: ["not found"] });

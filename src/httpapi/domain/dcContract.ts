@@ -10,5 +10,8 @@ export const rcContract = new web3.eth.Contract(
 );
 
 export const loadDomainOwner = (domainName: string) => {
-  return rcContract.methods.ownerOf(domainName.toLowerCase()).call();
+  return rcContract.methods
+    .ownerOf(domainName.toLowerCase())
+    .call()
+    .catch(() => "");
 };
