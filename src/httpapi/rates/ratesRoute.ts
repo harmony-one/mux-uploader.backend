@@ -14,7 +14,7 @@ const updateRate = () => {
       oneRateCache = rate;
     })
     .catch((ex) => {
-      logger.error("load rate error", [ex.message]);
+      logger.error("load rate error", { meta: { exception: ex.message } });
     });
 };
 

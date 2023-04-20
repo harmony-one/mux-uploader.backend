@@ -47,6 +47,11 @@ interface AppConfig {
     webhookSecret: string;
     syncInterval: number;
   };
+  reward: {
+    pk: string;
+    safeAddress: string;
+    txServiceUrl: string;
+  };
 }
 
 function getAppEnv(envStr: string | undefined) {
@@ -102,5 +107,10 @@ export const config: AppConfig = {
     webhookSecret: process.env.MUX_WEBHOOK_SECRET || "",
     syncInterval:
       parseInt(process.env.MUX_SYNC_INTERVAL || "0", 10) || ONE_MINUTE * 10,
+  },
+  reward: {
+    pk: process.env.REWARD_PK || "",
+    safeAddress: process.env.REWARD_SAFE_ADDRESS || "",
+    txServiceUrl: "https://transaction.multisig.harmony.one",
   },
 };

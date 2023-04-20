@@ -9,6 +9,7 @@ import { createRateLimiter } from "../rateLimit";
 import { ONE_MINUTE } from "../../constants/dates";
 import { DomainModel } from "../../db/models/DomainModel";
 import { Op } from "sequelize";
+import { RewardDAL } from "../../dal/RewardDAL";
 
 export const domainsRouter = Router();
 
@@ -32,6 +33,8 @@ domainsRouter.get(
       return res.status(400).json({ errors: errors.array() });
     }
     const { domainName } = req.params;
+
+    RewardDAL.createReferralReward({ domainName, referral: "testtest-s02" });
 
     try {
       const domain = await DomainDAL.get(domainName);
@@ -99,9 +102,6 @@ domainsRouter.get("/", listValidation, async (req: Request, res: Response) => {
     });
 
     return res.json({ data: _domainList });
-
-    res.json({ data: _domainList });
-    return;
   }
 
   const domainList = await DomainDAL.list({ offset, limit });
@@ -150,6 +150,7 @@ domainsRouter.post(
     const ownerAddress = await loadDomainOwner(domain);
 
     if (!ownerAddress) {
+      logger.error("Error create domain", "domain has no owner");
       return res.status(403).json({ errors: ["domain has no owner"] });
     }
 
@@ -157,6 +158,13 @@ domainsRouter.post(
       const domainExist = await DomainDAL.get(domain);
       if (domainExist) {
         return res.json({ data: domainExist });
+      }
+
+      if (referral) {
+        RewardDAL.createReferralReward({
+          referral,
+          domainName: domain,
+        });
       }
 
       const domainR = await DomainDAL.create({ domain, referral });

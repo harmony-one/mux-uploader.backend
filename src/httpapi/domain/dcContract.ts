@@ -15,3 +15,7 @@ export const loadDomainOwner = (domainName: string) => {
     .call()
     .catch(() => "");
 };
+
+export const loadDomainPrice = (domainName: string) => {
+  return rcContract.methods.getPrice(domainName).call();
+};
