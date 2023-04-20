@@ -34,8 +34,6 @@ domainsRouter.get(
     }
     const { domainName } = req.params;
 
-    RewardDAL.createReferralReward({ domainName, referral: "testtest-s02" });
-
     try {
       const domain = await DomainDAL.get(domainName);
 
