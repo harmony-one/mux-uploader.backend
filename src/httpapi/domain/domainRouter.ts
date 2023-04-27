@@ -87,24 +87,28 @@ domainsRouter.get("/", listValidation, async (req: Request, res: Response) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { limit, offset, hasReferral } = req.query as unknown as {
+  const {
+    limit = 100,
+    offset = 0,
+    hasReferral,
+  } = req.query as unknown as {
     offset?: number;
     limit?: number;
     hasReferral?: boolean;
   };
 
   if (hasReferral) {
-    const _domainList = await DomainModel.findAll({
+    const { rows, count } = await DomainModel.findAndCountAll({
       where: { referral: { [Op.ne]: "" } },
-      order: [["createdAt", "ASC"]],
+      order: [["createdAt", "DESC"]],
     });
 
-    return res.json({ data: _domainList });
+    return res.json({ count, data: rows });
   }
 
-  const domainList = await DomainDAL.list({ offset, limit });
+  const { rows, count } = await DomainDAL.list({ offset, limit });
 
-  res.json({ data: domainList });
+  res.json({ meta: { count, limit, offset }, data: rows });
 });
 
 const createValidation = checkSchema({

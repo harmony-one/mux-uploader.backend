@@ -5,12 +5,12 @@ import { createInterval } from "../../utils/createInterval";
 import { ONE_MINUTE } from "../../constants/dates";
 
 const sendRewardsInterval = createInterval(async () => {
-  const rewardList = await RewardDAL.list({
+  const { rows } = await RewardDAL.list({
     limit: 10,
     filters: { status: "fail" },
   });
 
-  for (const reward of rewardList) {
+  for (const reward of rows) {
     await RewardDAL.sendReferralReward(reward.id);
   }
 }, ONE_MINUTE * 10);
@@ -52,9 +52,9 @@ rewardRouter.get(
     }
 
     const {
-      offset,
+      offset = 0,
       status,
-      limit = 30,
+      limit = 100,
     } = req.query as unknown as {
       offset?: number;
       limit?: number;
@@ -72,13 +72,13 @@ rewardRouter.get(
     }
 
     try {
-      const rewardList = await RewardDAL.list({
+      const { count, rows } = await RewardDAL.list({
         filters,
         offset,
         limit,
       });
 
-      return res.json({ data: rewardList });
+      return res.json({ meta: { count, limit, offset }, data: rows });
     } catch (ex) {
       return next(ex);
     }

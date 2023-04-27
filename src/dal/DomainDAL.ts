@@ -18,10 +18,10 @@ export const DomainDAL = {
   },
 
   list: ({ offset = 0, limit = 100 }: { offset?: number; limit?: number }) => {
-    return DomainModel.findAll({
+    return DomainModel.findAndCountAll({
       limit,
       offset,
-      order: [["createdAt", "ASC"]],
+      order: [["createdAt", "DESC"]],
     });
   },
 
