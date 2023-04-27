@@ -82,6 +82,7 @@ export const RewardDAL = {
 
       if (!response.result) {
         log.error("error send reward", { meta: { error: response.error } });
+        await reward.update({ status: "fail" });
         return;
       }
 
@@ -110,7 +111,7 @@ export const RewardDAL = {
     limit?: number;
     filters?: { status?: "success" | "init" | "fail" };
   }) => {
-    return RewardModel.findAll({
+    return RewardModel.findAndCountAll({
       limit,
       offset,
       where: filters,
