@@ -158,14 +158,14 @@ domainsRouter.post(
         return res.json({ data: domainExist });
       }
 
+      const domainR = await DomainDAL.create({ domain, referral });
+
       if (referral) {
         RewardDAL.createReferralReward({
           referral,
           domainName: domain,
         });
       }
-
-      const domainR = await DomainDAL.create({ domain, referral });
 
       return res.json({ data: domainR });
     } catch (ex) {

@@ -52,6 +52,9 @@ interface AppConfig {
     safeAddress: string;
     txServiceUrl: string;
   };
+  speechmatics: {
+    apiKey: string;
+  };
 }
 
 function getAppEnv(envStr: string | undefined) {
@@ -112,5 +115,8 @@ export const config: AppConfig = {
     pk: process.env.REWARD_PK || "",
     safeAddress: process.env.REWARD_SAFE_ADDRESS || "",
     txServiceUrl: "https://transaction.multisig.harmony.one",
+  },
+  speechmatics: {
+    apiKey: process.env.SPEECHMATICS_API_KEY || "",
   },
 };
