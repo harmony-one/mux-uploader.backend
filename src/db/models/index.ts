@@ -6,6 +6,7 @@ import { MessageModel } from "./MessageModel";
 import { DomainModel } from "./DomainModel";
 import { LinkModel } from "./LinkModel";
 import { RewardModel } from "./RewardModel";
+import { WidgetModel } from "./WidgetModel";
 
 const dbConfig = config.db;
 
@@ -18,6 +19,7 @@ export const sequelize = new Sequelize({
     DomainModel,
     LinkModel,
     RewardModel,
+    WidgetModel,
   ],
 });
 

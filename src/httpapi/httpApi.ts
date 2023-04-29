@@ -22,6 +22,7 @@ import { ratesRouter } from "./rates/ratesRoute";
 import { linkRouter } from "./link/linkRouter";
 import { rewardRouter } from "./reward/rewardRouter";
 import { translationRoute } from "./translation/translationRoute";
+import { widgetRouter } from "./widget/widgetRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -54,6 +55,7 @@ httpAPI.use("/rates", ratesRouter);
 httpAPI.use("/links", linkRouter);
 httpAPI.use("/rewards", rewardRouter);
 httpAPI.use("/translations", translationRoute);
+httpAPI.use("/widgets", widgetRouter);
 
 httpAPI.use("/_health", async (req, res) => {
   const dbConnection = await sequelize
