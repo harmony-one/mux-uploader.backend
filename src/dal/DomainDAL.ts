@@ -17,6 +17,10 @@ export const DomainDAL = {
     return DomainModel.findOne({ where: { domain: domainName } });
   },
 
+  getByAddress: (address: string) => {
+    return DomainModel.findOne({ where: { owner: address } });
+  },
+
   list: ({ offset = 0, limit = 100 }: { offset?: number; limit?: number }) => {
     return DomainModel.findAndCountAll({
       limit,

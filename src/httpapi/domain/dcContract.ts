@@ -19,3 +19,7 @@ export const loadDomainOwner = (domainName: string) => {
 export const loadDomainPrice = (domainName: string) => {
   return rcContract.methods.getPrice(domainName).call();
 };
+
+export const loadResolver = () => {
+  return rcContract.methods.resolver().call();
+};

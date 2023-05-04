@@ -23,6 +23,8 @@ import { linkRouter } from "./link/linkRouter";
 import { rewardRouter } from "./reward/rewardRouter";
 import { translationRoute } from "./translation/translationRoute";
 import { widgetRouter } from "./widget/widgetRouter";
+import { reverseRouter } from "./reverse/reverseRouter";
+import { recordsRouter } from "./records/recordsRouter";
 
 export const httpAPI = express();
 httpAPI.use(cors());
@@ -56,6 +58,11 @@ httpAPI.use("/links", linkRouter);
 httpAPI.use("/rewards", rewardRouter);
 httpAPI.use("/translations", translationRoute);
 httpAPI.use("/widgets", widgetRouter);
+httpAPI.use("/reverse", reverseRouter);
+httpAPI.use("/records", recordsRouter);
+httpAPI.use("/tlds", (req, res) => {
+  res.json({ data: ["country"] });
+});
 
 httpAPI.use("/_health", async (req, res) => {
   const dbConnection = await sequelize
