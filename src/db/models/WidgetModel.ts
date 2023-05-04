@@ -10,7 +10,9 @@ import {
 
 export interface WidgetAttributes {
   id: string;
-  html: string;
+  attributes: {
+    any: string;
+  };
   title: string;
   owner: string;
 }
@@ -27,10 +29,10 @@ export class WidgetModel extends Model<
   id: string;
 
   @Column({
-    type: DataType.TEXT,
+    type: DataType.JSONB,
     allowNull: false,
   })
-  html: string;
+  attributes: Object;
 
   @Column({
     type: DataType.STRING,
