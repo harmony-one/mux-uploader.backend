@@ -15,7 +15,7 @@ const log = logger.child({ module: "RewardDal" });
 
 async function calculateRewardAmount(domainName: string): Promise<string> {
   const price = await loadDomainPrice(domainName);
-  return new BN(price).divn(100).muln(90).toString();
+  return new BN(price).divn(100).muln(50).toString();
 }
 
 export const RewardDAL = {
