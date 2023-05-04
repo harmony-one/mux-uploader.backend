@@ -6,12 +6,10 @@ import { ONE_MINUTE } from "../../constants/dates";
 
 export const widgetRouter = Router();
 const createValidation = checkSchema({
-  html: {
+  attributes: {
     in: "body",
-    errorMessage: "html is wrong",
-    isString: true,
-    trim: true,
-    escape: true,
+    errorMessage: "attributes is wrong",
+    isObject: true,
   },
   title: {
     in: "body",
@@ -38,11 +36,11 @@ widgetRouter.post(
     }
 
     try {
-      const { title, owner, html } = req.body;
+      const { title, owner, attributes } = req.body;
       // const domain = await WidgetDAL.get(domainName);
 
       const data = await WidgetDAL.create({
-        html,
+        attributes,
         owner,
         title,
       });
@@ -78,6 +76,7 @@ widgetRouter.get(
     let filters = {};
     try {
       const data = await WidgetDAL.getList(filters, limit as number);
+
       return res.json({
         data,
       });

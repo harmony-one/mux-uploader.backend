@@ -2,7 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import { WidgetModel } from "../db/models/WidgetModel";
 
 interface CreateNewWidgetAttr {
-  html: string;
+  attributes: {
+    any: string;
+  };
   title: string;
   owner: string;
 }
@@ -25,7 +27,7 @@ export const WidgetDAL = {
     return WidgetModel.create(
       {
         id,
-        html: params.html,
+        attributes: params.attributes,
         title: params.title,
         owner: params.owner,
       },
