@@ -54,17 +54,18 @@ interface AppConfig {
   };
   speechmatics: {
     apiKey: string;
+    apiHost: string;
   };
 }
 
-function getAppEnv(envStr: string | undefined) {
+function getAppEnv(envStr: string | undefined): AppEnv {
   const env = envStr;
   if (
     env === AppEnv.TEST ||
     env === AppEnv.DEVELOPMENT ||
     env === AppEnv.PRODUCTION
   ) {
-    return env;
+    return env as AppEnv;
   }
 
   throw new Error(`APP_ENV is invalid: ${env}`);
@@ -118,5 +119,6 @@ export const config: AppConfig = {
   },
   speechmatics: {
     apiKey: process.env.SPEECHMATICS_API_KEY || "",
+    apiHost: process.env.SPEECHMATICS_API_HOST || "https://mp.speechmatics.com",
   },
 };
